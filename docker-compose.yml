@@ -1,12 +1,20 @@
 version: '3'
 
 services:
-  app:
+  nginx:
+    image: nginx:latest
+    ports:
+      - 3000:3000    # localhost only by default
+    depends_on: 
+      - growi
+    volumes:
+      - ./nginx/default.conf:/etc/nginx/conf.d/default.conf
+  growi:
     build:
       context: .
       dockerfile: ./Dockerfile
-    ports:
-      - 127.0.0.1:3000:3000    # localhost only by default
+    # ports:
+    #   - 127.0.0.1:3030:3000    # localhost only by default
     links:
       - mongo:mongo
       - elasticsearch:elasticsearch
@@ -20,7 +28,8 @@ services:
       # - FILE_UPLOAD=mongodb   # activate this line if you use MongoDB GridFS rather than AWS
       # - FILE_UPLOAD=local     # activate this line if you use local storage of server rather than AWS
       # - MATHJAX=1             # activate this line if you want to use MathJax
-      - PLANTUML_URI=http://localhost:8080  # activate this line and specify if you use your own PlantUML server rather than public plantuml.com
+      # - PLANTUML_URI=http://localhost:8080  # activate this line and specify if you use your own PlantUML server rather than public plantuml.com
+      - PLANTUML_URI=/_ms/plantuml  # activate this line and specify if you use your own PlantUML server rather than public plantuml.com
       # - HACKMD_URI=http://    # activate this line and specify HackMD server URI which can be accessed from GROWI client browsers
       # - HACKMD_URI_FOR_SERVER=http://hackmd:3000  # activate this line and specify HackMD server URI which can be accessed from this server container
       # - FORCE_WIKI_MODE='public'    # activate this line to force wiki public mode
