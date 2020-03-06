@@ -34,7 +34,8 @@ services:
       # - HACKMD_URI_FOR_SERVER=http://hackmd:3000  # activate this line and specify HackMD server URI which can be accessed from this server container
       # - FORCE_WIKI_MODE='public'    # activate this line to force wiki public mode
       # - FORCE_WIKI_MODE='private'   # activate this line to force wiki private mode
-
+      - BLOCKDIAG_URI=/_ms/blockdiag
+      
     command: "dockerize
               -wait tcp://mongo:27017
               -wait tcp://elasticsearch:9200
@@ -71,6 +72,8 @@ services:
     restart: unless-stopped
     ports:
       - 127.0.0.1:8080:8080
+  blockdiag:
+    build: blockdiag
 volumes:
   growi_data:
   mongo_configdb:
